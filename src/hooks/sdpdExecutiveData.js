@@ -8,7 +8,7 @@ import {
   SDPD_RiskRegister_Tracker
 } from '@api/BoardSDK.js';
 
-export const useExecutiveData = () => {
+export const sdpdExecutiveData = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

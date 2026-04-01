@@ -96,3 +96,10 @@ export class SDPD_ActionRegister_Tracker extends BoardBase{constructor() {super(
 export class SDPD_SubmittalLog_Tracker extends BoardBase {constructor() {super("8709902368")}}
 export class SDPD_RFILog_Tracker extends BoardBase {constructor() {super("8709901882")}}
 export class SDPD_RiskRegister_Tracker extends BoardBase {constructor() {super("8709898403")}}
+
+export class MCSO_SSRS_Tracker extends BoardBase { constructor() {super ('9161263758')}}
+export class MCSO_Interface_Tracker extends BoardBase {constructor() {super ('193279747')}}
+export class MCSO_ActionRegister_Tracker extends BoardBase{constructor() {super("8055409759")}}
+export class MCSO_SubmittalLog_Tracker extends BoardBase {constructor() {super("8055800458")}}
+export class MCSO_RFILog_Tracker extends BoardBase {constructor() {super("8055796270")}}
+export class MCSO_RiskRegister_Tracker extends BoardBase {constructor() {super("8055764612")}}

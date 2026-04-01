@@ -17,6 +17,14 @@ import { Box } from '@chakra-ui/react';
 // A robust color palette for our Pie charts
 const PIE_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#df2f4a', '#00c875'];
 
+const STATUS_COLORS = {
+  'WAITING MSI': '#FFBB28',      // Yellow
+  'ON HOLD': '#0088FE',   // Blue
+  'RESOLVED': '#00C49F',     // Green
+  'OPEN / NEW': '#6e6e6e',  // Grey
+  'WAITING SDPD': '#FF8042', // Orange
+};
+
 export const Pie = ({ data, showLegend, colors }) => {
   // Ensure we don't crash if data is missing or empty
   if (!data || data.length === 0) return null;
@@ -35,8 +43,10 @@ export const Pie = ({ data, showLegend, colors }) => {
             dataKey="value"
             nameKey="label"
           >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+            {
+            data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={STATUS_COLORS[entry.id] || PIE_COLORS[index % PIE_COLORS.length]} />
+              
             ))}
           </RechartsPie>
           <Tooltip 
@@ -78,7 +88,7 @@ export const Bar = ({
               ? { top: 10, right: 20, left: 10, bottom: 5 } 
               : { top: 10, right: 20, left: 0, bottom: 10 }
           }
-        >
+        > 
           {isHorizontalBar ? (
             <>
               {/* Horizontal Bar Config */}
