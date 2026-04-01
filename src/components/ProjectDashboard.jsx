@@ -19,8 +19,10 @@ export const ProjectDashboard = ({ projectName }) => {
   switch(projectName){
     case "SDPD" : 
       project = sdpdExecutiveData()
+      break;
     case "MCSO" : 
       project = mcsoExecutiveData()
+      break;
   } 
   const { data, loading, error, refetch } = project ;
   
