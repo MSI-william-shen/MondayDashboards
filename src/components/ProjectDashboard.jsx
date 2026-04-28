@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { Box, Container, Flex, Heading, Text } from '@chakra-ui/react';
 import { LayoutDashboard, RefreshCw } from 'lucide-react';
 import Button from '@components/Button';
-import { sdpdExecutiveData} from '../hooks/sdpdExecutiveData'; 
-import { mcsoExecutiveData } from '../hooks/mcsoExecutiveData';
+import { useExecutiveData } from '../hooks/useExecutiveData';
 import { BoardMetricsGrid } from './BoardMetricsGrid';
 import { DeliveryTrends, InterfaceCards, SsrsCards } from './DashboardCharts';
 import { AlertBanner } from './AlertBanner';
@@ -13,19 +12,8 @@ import { HeaderTabs } from './HeaderTabs';
 
 
 export const ProjectDashboard = ({ projectName }) => {
-  // NOTE: In the future, you can update your custom hook to accept the project name
-  // e.g., useExecutiveData(projectName) so it fetches the correct Monday.com boards!
-  let project;
-  switch(projectName){
-    case "SDPD" : 
-      project = sdpdExecutiveData()
-      break;
-    case "MCSO" : 
-      project = mcsoExecutiveData()
-      break;
-  } 
-  const { data, loading, error, refetch } = project ;
-  
+
+  const { data, loading, error, refetch } = useExecutiveData(projectName);
 
   const [activeTab, setActiveTab] = useState('overview');
 

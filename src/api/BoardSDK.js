@@ -1,6 +1,7 @@
 import mondaySdk from 'monday-sdk-js';
-const monday = mondaySdk();
+export const monday = mondaySdk();
 monday.setToken("eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjYxNjM1MDE0NSwiYWFpIjoxMSwidWlkIjo4NjIzMDE5NiwiaWFkIjoiMjAyNi0wMi0wM1QyMjowNjowMC4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MjI4Njg2NjUsInJnbiI6InVzZTEifQ.7j0rTJpDX663VvdZoJ6Qr0KrUPsCDA8Mln3IED5157I")
+
 class BoardBase {
   constructor(boardId) {
     this.boardId = boardId;

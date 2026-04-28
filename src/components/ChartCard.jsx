@@ -1,14 +1,38 @@
 import React from 'react';
-import { Box, Heading, Text } from '@chakra-ui/react';
+import { Box, Heading, Text, Flex } from '@chakra-ui/react';
+import Button from '@components/Button';
+import { ExternalLink } from 'lucide-react';
+import { monday } from '@api/BoardSDK'; //
 
-const ChartCard = ({ title, subtitle, children }) => (
-  <Box bg="white" p={6} borderRadius="xl" border="1px solid" borderColor="border.subtle" boxShadow="md">
-    <Heading size="md" mb={1} color="fg">{title}</Heading>
-    {subtitle && <Text fontSize="xs" color="fg.muted" mb={4}>{subtitle}</Text>}
-    <Box height="300px">
-      {children}
+const ChartCard = ({ title, subtitle, boardId, children }) => {
+  const handleOpenBoard = () => {
+    if (boardId) {
+      monday.execute("openBoard", { board_id: parseInt(boardId) }); //
+    }
+  };
+
+  return (
+    <Box bg="white" p={6} borderRadius="xl" border="1px solid" borderColor="border.subtle" boxShadow="md">
+      <Flex justify="space-between" align="flex-start" mb={2}>
+        <Box>
+          <Heading size="md" color="fg">{title}</Heading>
+          {subtitle && <Text fontSize="xs" color="fg.muted">{subtitle}</Text>}
+        </Box>
+        
+        {/* Deliberate click action */}
+        {boardId && (
+          <Button variant="ghost" size="xs" onClick={handleOpenBoard}>
+            <ExternalLink size={14} style={{ marginRight: '4px' }} />
+            View Board
+          </Button>
+        )}
+      </Flex>
+      
+      <Box height="300px">
+        {children}
+      </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 export default ChartCard;

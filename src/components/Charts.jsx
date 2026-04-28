@@ -23,6 +23,8 @@ const STATUS_COLORS = {
   'RESOLVED': '#00C49F',     // Green
   'OPEN / NEW': '#6e6e6e',  // Grey
   'WAITING SDPD': '#FF8042', // Orange
+  'OVERDUE MSI' : "#d61515", // red
+  "WAITING MCSO" : "##FF8042",
 };
 
 export const Pie = ({ data, showLegend, colors }) => {
