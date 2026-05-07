@@ -8,14 +8,31 @@ import { BoardMetricsGrid } from './BoardMetricsGrid';
 import { DeliveryTrends, InterfaceCards, SsrsCards } from './DashboardCharts';
 import { AlertBanner } from './AlertBanner';
 import { HeaderTabs } from './HeaderTabs';
-
-
+import { BoardDetailView } from './BoardDetailView';
 
 export const ProjectDashboard = ({ projectName }) => {
 
   const { data, loading, error, refetch } = useExecutiveData(projectName);
-
   const [activeTab, setActiveTab] = useState('overview');
+  
+  // Stores { id: '...', type: '...', filterParams: {...}, visibleColumns: [...] }
+  const [selectedBoardConfig, setSelectedBoardConfig] = useState(null); 
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    setSelectedBoardConfig(null); 
+  };
+
+  // ✅ Updated to accept `visibleColumns`
+  const handleBoardClick = (boardId, type, filterParams = null, visibleColumns = null) => {
+    if (boardId) {
+      setSelectedBoardConfig({ id: boardId, type, filterParams, visibleColumns });
+      
+      setTimeout(() => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      }, 100);
+    }
+  };
 
   return (
     <Box pb={10}>
@@ -27,7 +44,6 @@ export const ProjectDashboard = ({ projectName }) => {
                 <LayoutDashboard size={24} />
               </Box>
               <Box>
-                {/* Dynamically insert the Project Name */}
                 <Heading textStyle="2xl" fontWeight="700" color="fg">
                   {projectName} Portfolio Health
                 </Heading>
@@ -47,13 +63,13 @@ export const ProjectDashboard = ({ projectName }) => {
       <Container maxW="container.xl">
         <AlertBanner metrics={{ blocked: data?.criticalTotal, delinquent: 0 }} />
         
-        <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+        <HeaderTabs activeTab={activeTab} setActiveTab={handleTabChange} />
         
         <Box className="fade-in">
           {activeTab === 'overview' && (
             <Box mb={10}>
               <Heading textStyle="lg" mb={4} color="fg.muted" fontWeight="600">PORTFOLIO SEGMENTS</Heading>
-              <BoardMetricsGrid boards={data?.boards} loading={loading} />
+              <BoardMetricsGrid boards={data?.boards} loading={loading} onCardClick={handleBoardClick} />
             </Box>
           )}
 
@@ -67,7 +83,7 @@ export const ProjectDashboard = ({ projectName }) => {
           {activeTab === 'interfaces' && (
             <Box mb={5}>
               <Heading textStyle="lg" mb={4} color="fg.muted" fontWeight="600">INTERFACE TRENDS</Heading>
-              <InterfaceCards boards={data?.boards} loading={loading} />
+              <InterfaceCards boards={data?.boards} loading={loading} onChartClick={handleBoardClick} />
             </Box>
           )}
 
@@ -84,6 +100,13 @@ export const ProjectDashboard = ({ projectName }) => {
             <Text color="red.fg" fontWeight="bold">Error: {error}</Text>
           </Box>
         )}
+
+        <BoardDetailView 
+          boardConfig={selectedBoardConfig} 
+          projectName={projectName}
+          onClose={() => setSelectedBoardConfig(null)} 
+        />
+        
       </Container>
     </Box>
   );

@@ -21,7 +21,7 @@ export const DeliveryTrends = ({ boards, loading }) => {
   );
 };
 
-export const InterfaceCards = ({ boards, loading }) => {
+export const InterfaceCards = ({ boards, loading, onChartClick }) => {
   if (loading || !boards) return null;
 
   const transformData = (stats, labelKey) => 
@@ -36,6 +36,9 @@ export const InterfaceCards = ({ boards, loading }) => {
           yField="value" 
           colors={['#1b263b']}
           layout="horizontal"
+          onBarClick={(statusId) => onChartClick(boards.interface.boardId, 'interface_chart', { system: '⚖️PremierOne RMS', status: statusId },
+            ["Item Name", "DELIVERY STATUS", "SYSTEM", "NOTES"]
+          )}
         />
       </ChartCard>
       <ChartCard title="CAD Interfaces" boardId={boards.interface.boardId}>
@@ -45,6 +48,9 @@ export const InterfaceCards = ({ boards, loading }) => {
           yField="value" 
           colors={['#1b263b']}
           layout="horizontal"
+          onBarClick={(statusId) => onChartClick(boards.interface.boardId, 'interface_chart', { system: '🖥️ PremierOne CAD', status: statusId },
+            ["Item Name", "DELIVERY STATUS", "SYSTEM", "NOTES"]
+          )}
         />
       </ChartCard>
     </SimpleGrid>

@@ -1,20 +1,27 @@
 import React from 'react';
-import { Card, Box, Flex, Text, Badge, Icon, Stack, Separator } from '@chakra-ui/react';
-import { AlertCircle, CheckCircle2, Info } from 'lucide-react';
+import { Card, Box, Flex, Text, Badge, Stack, Separator } from '@chakra-ui/react';
+import { AlertCircle } from 'lucide-react';
 
-export const BoardHealthCard = ({ title, stats, atRisk, colorPalette = "blue" }) => {
+export const BoardHealthCard = ({ title, stats, atRisk, colorPalette = "blue", boardId, onClick }) => {
   const total = stats.reduce((acc, s) => acc + s.count, 0);
   
   return (
-    <Card.Root className="executive-card" variant="subtle" borderLeft="4px solid" borderLeftColor={`${colorPalette}.solid`}>
+    <Card.Root 
+      className="executive-card" 
+      variant="subtle" 
+      borderLeft="4px solid" 
+      borderLeftColor={`${colorPalette}.solid`}
+      cursor="pointer"
+      onClick={() => onClick && onClick(boardId)}
+      _hover={{ transform: "translateY(-4px)", shadow: "lg", borderColor: `${colorPalette}.solid` }}
+      transition="all 0.2s ease"
+    >
       <Card.Body p={5}>
         <Flex justify="space-between" align="center" mb={4}>
           <Text fontWeight="700" color="fg" fontSize="sm" textTransform="uppercase" letterSpacing="widest">
             {title}
           </Text>
-          <Icon color={`${colorPalette}.fg`} asChild>
-            <Info size={16} />
-          </Icon>
+          {/* Info Icon has been removed from here */}
         </Flex>
 
         <Stack gap={3}>

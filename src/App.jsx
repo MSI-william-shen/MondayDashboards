@@ -35,7 +35,7 @@ const App = () => {
               >
                 SDPD
               </Box>
-              <Box
+              {/*<Box
                 as="button"
                 px={4}
                 py={1.5}
@@ -48,7 +48,7 @@ const App = () => {
                 transition="all 0.2s"
               >
                 MCSO
-              </Box>
+              </Box>*/}
             </Flex>
           </Flex>
         </Container>

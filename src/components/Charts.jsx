@@ -10,25 +10,23 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-  LabelList // <-- Added LabelList here
+  LabelList 
 } from 'recharts';
 import { Box } from '@chakra-ui/react';
 
-// A robust color palette for our Pie charts
 const PIE_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#df2f4a', '#00c875'];
 
 const STATUS_COLORS = {
-  'WAITING MSI': '#FFBB28',      // Yellow
-  'ON HOLD': '#0088FE',   // Blue
-  'RESOLVED': '#00C49F',     // Green
-  'OPEN / NEW': '#6e6e6e',  // Grey
-  'WAITING SDPD': '#FF8042', // Orange
-  'OVERDUE MSI' : "#d61515", // red
+  'WAITING MSI': '#FFBB28',      
+  'ON HOLD': '#0088FE',   
+  'RESOLVED': '#00C49F',     
+  'OPEN / NEW': '#6e6e6e',  
+  'WAITING SDPD': '#FF8042', 
+  'OVERDUE MSI' : "#d61515", 
   "WAITING MCSO" : "##FF8042",
 };
 
 export const Pie = ({ data, showLegend, colors }) => {
-  // Ensure we don't crash if data is missing or empty
   if (!data || data.length === 0) return null;
 
   return (
@@ -61,21 +59,18 @@ export const Pie = ({ data, showLegend, colors }) => {
   );
 };
 
-// Updated Bar component with LabelList and spacing fixes
 export const Bar = ({ 
   data, 
   xField = 'label', 
-  yFields,           // Supports an array of keys for multiple bars
-  yField = 'value',  // Fallback for single-key backward compatibility
+  yFields,           
+  yField = 'value',  
   colors = ['#3182ce', '#e53e3e', '#38a169', '#d69e2e'], 
-  layout = 'vertical' 
+  layout = 'vertical',
+  onBarClick // <-- Add this prop
 }) => {
   if (!data || data.length === 0) return null;
 
-  // In Recharts, if you want horizontal bars (left-to-right), the layout prop must be 'vertical'.
   const isHorizontalBar = layout === 'horizontal';
-  
-  // Safely handle both single yField strings or new yFields arrays
   const dataKeys = yFields || [yField];
 
   return (
@@ -84,7 +79,6 @@ export const Bar = ({
         <BarChart
           data={data}
           layout={isHorizontalBar ? 'vertical' : 'horizontal'}
-          // Increased margins to ensure labels don't get clipped off the edges
           margin={
             isHorizontalBar 
               ? { top: 10, right: 20, left: 10, bottom: 5 } 
@@ -93,15 +87,14 @@ export const Bar = ({
         > 
           {isHorizontalBar ? (
             <>
-              {/* Horizontal Bar Config */}
               <XAxis type="number" hide/>
               <YAxis 
                 dataKey={xField} 
                 type="category" 
                 axisLine={false} 
                 tickLine={false} 
-                width={200} // Increased width for long text
-                interval={0} // Forces all labels to show
+                width={200} 
+                interval={0} 
                 angle={0}
                 textAnchor='end'
                 tick={{ fontSize: 6, fill: '#718096' }}
@@ -109,15 +102,14 @@ export const Bar = ({
             </>
           ) : (
             <>
-              {/* Vertical Column Config */}
               <XAxis 
                 dataKey={xField} 
                 axisLine={false} 
                 tickLine={false}
-                interval={0} // Forces all labels to show
-                angle={0}  // Tilts the text to prevent overlapping
-                textAnchor="end" // Aligns tilted text properly to the tick
-                height={80} // Gives the tilted text room at the bottom
+                interval={0} 
+                angle={0}  
+                textAnchor="end" 
+                height={80} 
                 tick={{ fontSize: 8,fill: '#718096', dy: 10}}
               />
               <YAxis type="number" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} hide />
@@ -136,8 +128,14 @@ export const Bar = ({
               fill={colors[index % colors.length]} 
               radius={isHorizontalBar ? [0, 4, 4, 0] : [4, 4, 0, 0]} 
               barSize={isHorizontalBar ? 24 : 40}
+              onClick={(data) => {
+                 if(onBarClick) {
+                   // Ensure we pass the clean id string from the transformed data
+                   onBarClick(data.id || data.payload?.id || data.name);
+                 }
+              }}
+              cursor={onBarClick ? "pointer" : "default"} // Make it look clickable
             >
-              {/* Adds the actual number values onto the bars */}
               <LabelList 
                 dataKey={field} 
                 position={isHorizontalBar ? 'right' : 'top'} 
