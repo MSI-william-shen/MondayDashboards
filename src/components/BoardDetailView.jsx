@@ -71,7 +71,6 @@ export const BoardDetailView = ({ boardConfig, projectName, onClose }) => {
               const stat = item['DELIVERY STATUS'] || item['Delivery Status'] || '';
               return ds === boardConfig.filterParams?.dataSource && stat === boardConfig.filterParams?.status;
             }
-            // ✅ New logic: Filter Active Risks
             if (boardConfig.type === 'risk') {
               const status = (item['STATUS'] || item['Status'] || '').toUpperCase();
               return status !== 'MITIGATED';
@@ -106,8 +105,9 @@ export const BoardDetailView = ({ boardConfig, projectName, onClose }) => {
 
   if (!boardConfig?.id) return null;
 
+  // ✅ Updated to use the direct URL with /pulses/[itemId]
   const handleOpenItem = (itemId) => {
-    monday.execute('openItemCard', { itemId: parseInt(itemId) });
+    window.open(`https://motorolasolutions891304.monday.com/boards/${boardConfig.id}/pulses/${itemId}`, '_blank');
   };
 
   let viewTitle = 'At Risk Items';
@@ -119,7 +119,7 @@ export const BoardDetailView = ({ boardConfig, projectName, onClose }) => {
   } else if (boardConfig?.type === 'ssrs_chart') { 
     viewTitle = `${boardConfig.filterParams?.dataSource} - ${boardConfig.filterParams?.status}`;
     viewSubtitle = 'Viewing filtered items from the chart selection';
-  } else if (boardConfig?.type === 'risk') { // ✅ Dynamic title logic for Risk Register
+  } else if (boardConfig?.type === 'risk') { 
     viewTitle = 'Active Risks';
     viewSubtitle = 'Viewing non-mitigated items from the Risk Register';
   }
@@ -132,7 +132,7 @@ export const BoardDetailView = ({ boardConfig, projectName, onClose }) => {
           <Text fontSize="sm" color="fg.muted">{viewSubtitle}</Text>
         </Box>
         <Flex gap={3}>
-          <Button variant="outline" colorPalette="gray" onClick={() => monday.execute('openBoard', { board_id: parseInt(boardConfig.id) })}>
+          <Button variant="outline" colorPalette="gray" onClick={() => window.open(`https://motorolasolutions891304.monday.com/boards/${boardConfig.id}`, '_blank')}>
             <ExternalLink size={16} style={{marginRight: '6px'}} /> View Full Board
           </Button>
           <Button variant="ghost" colorPalette="red" onClick={onClose}>

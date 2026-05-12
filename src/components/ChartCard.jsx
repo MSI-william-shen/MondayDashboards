@@ -2,12 +2,11 @@ import React from 'react';
 import { Box, Heading, Text, Flex } from '@chakra-ui/react';
 import Button from '@components/Button';
 import { ExternalLink } from 'lucide-react';
-import { monday } from '@api/BoardSDK'; //
 
 const ChartCard = ({ title, subtitle, boardId, children }) => {
   const handleOpenBoard = () => {
     if (boardId) {
-      monday.execute("openBoard", { board_id: parseInt(boardId) }); //
+      window.open(`https://motorolasolutions891304.monday.com/boards/${boardId}`, '_blank');
     }
   };
 
