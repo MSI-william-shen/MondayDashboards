@@ -66,11 +66,15 @@ export const BoardDetailView = ({ boardConfig, projectName, onClose }) => {
               const stat = item['DELIVERY STATUS'] || item['Delivery Status'] || '';
               return sys === boardConfig.filterParams?.system && stat === boardConfig.filterParams?.status;
             }
-            // ✅ New logic: Filter explicitly by the parameters sent from the SSRS Chart
             if (boardConfig.type === 'ssrs_chart') {
               const ds = item['DATA SOURCE'] || item['Data Source'] || '';
               const stat = item['DELIVERY STATUS'] || item['Delivery Status'] || '';
               return ds === boardConfig.filterParams?.dataSource && stat === boardConfig.filterParams?.status;
+            }
+            // ✅ New logic: Filter Active Risks
+            if (boardConfig.type === 'risk') {
+              const status = (item['STATUS'] || item['Status'] || '').toUpperCase();
+              return status !== 'MITIGATED';
             }
             if (boardConfig.type === 'action') {
               const status = (item['STATUS'] || item['Status'] || '').toUpperCase();
@@ -112,9 +116,12 @@ export const BoardDetailView = ({ boardConfig, projectName, onClose }) => {
   if (boardConfig?.type === 'interface_chart') {
     viewTitle = `${boardConfig.filterParams?.system} - ${boardConfig.filterParams?.status}`;
     viewSubtitle = 'Viewing filtered items from the chart selection';
-  } else if (boardConfig?.type === 'ssrs_chart') { // ✅ Title mapping logic for SSRS
+  } else if (boardConfig?.type === 'ssrs_chart') { 
     viewTitle = `${boardConfig.filterParams?.dataSource} - ${boardConfig.filterParams?.status}`;
     viewSubtitle = 'Viewing filtered items from the chart selection';
+  } else if (boardConfig?.type === 'risk') { // ✅ Dynamic title logic for Risk Register
+    viewTitle = 'Active Risks';
+    viewSubtitle = 'Viewing non-mitigated items from the Risk Register';
   }
 
   return (

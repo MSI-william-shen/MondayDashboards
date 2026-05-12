@@ -54,5 +54,6 @@ export const BoardMetricsGrid = ({ boards, loading, onCardClick }) => {
         onClick={(id) => onCardClick(id, 'interface')}
       />
     </SimpleGrid>
+    
   );
 };

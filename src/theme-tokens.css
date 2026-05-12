@@ -42,3 +42,20 @@
     transform: translateY(0);
   }
 }
+
+/* --- Print Styling --- */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  /* Force background colors to print for charts and banners */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  body {
+    background-color: white !important;
+  }
+}

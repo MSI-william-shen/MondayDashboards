@@ -15,7 +15,6 @@ export const ProjectDashboard = ({ projectName }) => {
   const { data, loading, error, refetch } = useExecutiveData(projectName);
   const [activeTab, setActiveTab] = useState('overview');
   
-  // Stores { id: '...', type: '...', filterParams: {...}, visibleColumns: [...] }
   const [selectedBoardConfig, setSelectedBoardConfig] = useState(null); 
 
   const handleTabChange = (tabId) => {
@@ -35,7 +34,7 @@ export const ProjectDashboard = ({ projectName }) => {
 
   return (
     <Box pb={10}>
-      <Box bg="white" borderBottom="1px solid" borderColor="border.subtle" mb={6}>
+      <Box bg="white" borderBottom="1px solid" borderColor="border.subtle" mb={6} className="no-print">
         <Container maxW="container.xl" py={6}>
           <Flex justify="space-between" align="center" flexWrap="wrap" gap={4}>
             <Flex align="center" gap={3}>
@@ -89,8 +88,18 @@ export const ProjectDashboard = ({ projectName }) => {
           {activeTab === 'ssrs' && (
             <Box mb={5}>
               <Heading textStyle="lg" mb={4} color="fg.muted" fontWeight="600">SSRS TRENDS</Heading>
-              {/* ✅ Added onChartClick to SSRS Cards here */}
               <SsrsCards boards={data?.boards} loading={loading} onChartClick={handleBoardClick} />
+            </Box>
+          )}
+
+          {/* ✅ Render the BoardDetailView inline when the Risk Tab is selected */}
+          {activeTab === 'risk' && data?.boards?.risk?.boardId && (
+            <Box mb={5} mt={-10}>
+              <BoardDetailView 
+                boardConfig={{ id: data.boards.risk.boardId, type: 'risk' }} 
+                projectName={projectName}
+                onClose={() => setActiveTab('overview')} 
+              />
             </Box>
           )}
         </Box>
@@ -101,6 +110,7 @@ export const ProjectDashboard = ({ projectName }) => {
           </Box>
         )}
 
+        {/* Global overlay detail view (Only renders if a card is clicked) */}
         <BoardDetailView 
           boardConfig={selectedBoardConfig} 
           projectName={projectName}
