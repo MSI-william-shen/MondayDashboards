@@ -33,28 +33,22 @@ export const BoardDetailView = ({ boardConfig, projectName, onClose }) => {
         if (board && isMounted) {
           setBoardName(board.name);
           
-          // 1. Establish the base columns
           const rawCols = [{ id: 'name', title: 'Item Name' }, ...board.columns];
           
-          // 2. Safely filter them if "visibleColumns" was passed as a parameter
           let displayCols = rawCols;
           if (boardConfig.visibleColumns && boardConfig.visibleColumns.length > 0) {
-            // Filter out any undefined column names passed in
             const requestedCols = boardConfig.visibleColumns
               .filter(Boolean)
               .map(c => c.toLowerCase());
               
             displayCols = rawCols.filter(c => {
-              // Safely fallback to an empty string if title or id is undefined
               const titleMatch = (c.title || '').toLowerCase();
               const idMatch = (c.id || '').toLowerCase();
-              
               return requestedCols.includes(titleMatch) || requestedCols.includes(idMatch);
             });
           }
           setColumns(displayCols);
 
-          // 3. Map values for filtering and rendering
           const columnMap = {};
           board.columns.forEach(c => { columnMap[c.id] = c.title; });
 
@@ -71,6 +65,12 @@ export const BoardDetailView = ({ boardConfig, projectName, onClose }) => {
               const sys = item['SYSTEM'] || item['System'] || '';
               const stat = item['DELIVERY STATUS'] || item['Delivery Status'] || '';
               return sys === boardConfig.filterParams?.system && stat === boardConfig.filterParams?.status;
+            }
+            // ✅ New logic: Filter explicitly by the parameters sent from the SSRS Chart
+            if (boardConfig.type === 'ssrs_chart') {
+              const ds = item['DATA SOURCE'] || item['Data Source'] || '';
+              const stat = item['DELIVERY STATUS'] || item['Delivery Status'] || '';
+              return ds === boardConfig.filterParams?.dataSource && stat === boardConfig.filterParams?.status;
             }
             if (boardConfig.type === 'action') {
               const status = (item['STATUS'] || item['Status'] || '').toUpperCase();
@@ -112,6 +112,9 @@ export const BoardDetailView = ({ boardConfig, projectName, onClose }) => {
   if (boardConfig?.type === 'interface_chart') {
     viewTitle = `${boardConfig.filterParams?.system} - ${boardConfig.filterParams?.status}`;
     viewSubtitle = 'Viewing filtered items from the chart selection';
+  } else if (boardConfig?.type === 'ssrs_chart') { // ✅ Title mapping logic for SSRS
+    viewTitle = `${boardConfig.filterParams?.dataSource} - ${boardConfig.filterParams?.status}`;
+    viewSubtitle = 'Viewing filtered items from the chart selection';
   }
 
   return (
@@ -141,7 +144,6 @@ export const BoardDetailView = ({ boardConfig, projectName, onClose }) => {
             <Table.Header bg="bg.subtle" position="sticky" top={0} zIndex={1}>
               <Table.Row>
                 <Table.ColumnHeader whiteSpace="nowrap" fontWeight="bold">Action</Table.ColumnHeader>
-                {/* Dynamically render only the requested/visible columns */}
                 {columns.map(col => (
                   <Table.ColumnHeader key={col.id} whiteSpace="nowrap" fontWeight="bold">
                     {col.title}
@@ -158,7 +160,6 @@ export const BoardDetailView = ({ boardConfig, projectName, onClose }) => {
                     </Button>
                   </Table.Cell>
                   
-                  {/* Match the row data exactly to the visible columns */}
                   {columns.map(col => (
                     <Table.Cell key={col.id} whiteSpace="nowrap" maxW="300px" truncate>
                       {col.id === 'name' ? item.name : (item[col.title] || '-')}

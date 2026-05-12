@@ -23,7 +23,6 @@ export const ProjectDashboard = ({ projectName }) => {
     setSelectedBoardConfig(null); 
   };
 
-  // ✅ Updated to accept `visibleColumns`
   const handleBoardClick = (boardId, type, filterParams = null, visibleColumns = null) => {
     if (boardId) {
       setSelectedBoardConfig({ id: boardId, type, filterParams, visibleColumns });
@@ -90,7 +89,8 @@ export const ProjectDashboard = ({ projectName }) => {
           {activeTab === 'ssrs' && (
             <Box mb={5}>
               <Heading textStyle="lg" mb={4} color="fg.muted" fontWeight="600">SSRS TRENDS</Heading>
-              <SsrsCards boards={data?.boards} loading={loading} />
+              {/* ✅ Added onChartClick to SSRS Cards here */}
+              <SsrsCards boards={data?.boards} loading={loading} onChartClick={handleBoardClick} />
             </Box>
           )}
         </Box>

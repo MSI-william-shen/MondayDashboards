@@ -57,7 +57,7 @@ export const InterfaceCards = ({ boards, loading, onChartClick }) => {
   );
 };
 
-export const SsrsCards = ({ boards, loading }) => {
+export const SsrsCards = ({ boards, loading, onChartClick }) => { // <-- Added onChartClick prop
   if (loading || !boards) return null;
 
   const transformData = (stats, labelKey) => 
@@ -71,6 +71,9 @@ export const SsrsCards = ({ boards, loading }) => {
           xField="label" 
           yField="value" 
           colors={['#9d50dd']}
+          onBarClick={(statusId) => onChartClick(boards.ssrs.boardId, 'ssrs_chart', { dataSource: '⚖️PremierOne RMS', status: statusId },
+            ["Item Name", "DELIVERY STATUS", "DATA SOURCE", "NOTES"] // Customizable columns
+          )}
         />
       </ChartCard>
       <ChartCard title="CAD SSRS" boardId={boards.ssrs.boardId}>
@@ -79,6 +82,9 @@ export const SsrsCards = ({ boards, loading }) => {
           xField="label" 
           yField="value" 
           colors={['#9d50dd']}
+          onBarClick={(statusId) => onChartClick(boards.ssrs.boardId, 'ssrs_chart', { dataSource: '🖥️ PremierOne CAD', status: statusId },
+            ["Item Name", "DELIVERY STATUS", "DATA SOURCE", "NOTES"] // Customizable columns
+          )}
         />
       </ChartCard>
     </SimpleGrid>
