@@ -71,6 +71,7 @@ export const SsrsCards = ({ boards, loading, onChartClick }) => { // <-- Added o
           xField="label" 
           yField="value" 
           colors={['#9d50dd']}
+          layout="horizontal"
           onBarClick={(statusId) => onChartClick(boards.ssrs.boardId, 'ssrs_chart', { dataSource: '⚖️PremierOne RMS', status: statusId },
             ["Item Name", "DELIVERY STATUS", "DATA SOURCE", "NOTES"] // Customizable columns
           )}
@@ -82,6 +83,7 @@ export const SsrsCards = ({ boards, loading, onChartClick }) => { // <-- Added o
           xField="label" 
           yField="value" 
           colors={['#9d50dd']}
+          layout="horizontal"
           onBarClick={(statusId) => onChartClick(boards.ssrs.boardId, 'ssrs_chart', { dataSource: '🖥️ PremierOne CAD', status: statusId },
             ["Item Name", "DELIVERY STATUS", "DATA SOURCE", "NOTES"] // Customizable columns
           )}

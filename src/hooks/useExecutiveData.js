@@ -38,7 +38,7 @@ export const useExecutiveData = (projectName) => {
         rfi: rfiRaw.filter(s => s["WORK STATUS"] !== 'CLOSED'),
         sub: subRaw.filter(s => s["WORK STATUS"] !== 'CLOSED'),
         interface: interfaceRaw.filter(s => s["DELIVERY STATUS"] !== '✅ COMPLETE'),
-        ssrs: ssrsRaw.filter(s => s["DELIVERY STATUS"] !== '✅ COMPLETE'),
+        ssrs: ssrsRaw.filter(s => s["DELIVERY STATUS"] !== '✅ COMPLETE' && s["DELIVERY STATUS"] !== "DO NOT USE"),
         risk: riskRaw.filter(s => s["STATUS"] !== "MITIGATED")
       };
 
@@ -69,8 +69,8 @@ export const useExecutiveData = (projectName) => {
             stats: activeStats.ssrs, 
             atRisk: blockedSSRS[0]?.count || 0, 
             boardId: sdk.ssrs.boardId, 
-            ssrs_cad: cad_ssrs, 
-            ssrs_rms: rms_ssrs
+            ssrs_cad: cad_ssrs.filter(s => s["DELIVERY STATUS"] !== "DO NOT USE"), 
+            ssrs_rms: rms_ssrs.filter(s => s["DELIVERY STATUS"] !== "DO NOT USE")
           },
           interface: { 
             title: 'Interfaces', 
